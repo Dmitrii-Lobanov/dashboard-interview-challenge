@@ -53,6 +53,29 @@
   align-items: center;
 }
 
+.th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease;
+  justify-content: space-between;
+}
+
+.th.sortable:hover {
+  background: var(--social-bg);
+}
+
+.sort-icon {
+  font-size: 14px;
+  margin-left: 8px;
+  opacity: 0.3;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.sort-icon.active {
+  opacity: 1;
+  color: var(--accent);
+}
+
 .table-row {
   display: flex;
   border-bottom: 1px solid var(--border);

@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import './UserTable.css';
 
@@ -21,8 +21,36 @@ interface UserTableProps {
 export const UserTable = ({ users, fetchNextPage, hasMore, isLoading }: UserTableProps) => {
   const parentRef = useRef<HTMLDivElement>(null);
 
+  const [sortKey, setSortKey] = useState<keyof User | 'company' | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+
+  const handleSort = (key: keyof User | 'company') => {
+    if (sortKey === key) {
+      setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortKey(key);
+      setSortDirection('asc');
+    }
+  };
+
+  const sortedUsers = useMemo(() => {
+    if (!users) return [];
+    if (!sortKey) return users;
+    return [...users].sort((a, b) => {
+      const valA = sortKey === 'company' ? a.company.name : a[sortKey as keyof User];
+      const valB = sortKey === 'company' ? b.company.name : b[sortKey as keyof User];
+      
+      const strA = String(valA).toLowerCase();
+      const strB = String(valB).toLowerCase();
+
+      if (strA < strB) return sortDirection === 'asc' ? -1 : 1;
+      if (strA > strB) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }, [users, sortKey, sortDirection]);
+
   const rowVirtualizer = useVirtualizer({
-    count: hasMore ? users.length + 1 : users.length,
+    count: hasMore ? sortedUsers.length + 1 : sortedUsers.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 64, // row height
     overscan: 5,
@@ -38,19 +66,24 @@ export const UserTable = ({ users, fetchNextPage, hasMore, isLoading }: UserTabl
     }
 
     if (
-      lastItem.index >= users.length - 1 &&
+      lastItem.index >= sortedUsers.length - 1 &&
       hasMore &&
       !isLoading &&
       fetchNextPage
     ) {
       fetchNextPage();
     }
-  }, [hasMore, fetchNextPage, users.length, isLoading, virtualItems]);
+  }, [hasMore, fetchNextPage, sortedUsers.length, isLoading, virtualItems]);
 
   if (!users || users.length === 0) {
     if (isLoading) return null; // Let dashboard loader handle full-page empty state
     return <div className="no-users">No users found</div>;
   }
+
+  const renderSortIndicator = (key: string) => {
+    if (sortKey !== key) return <span className="sort-icon inactive">↕</span>;
+    return sortDirection === 'asc' ? <span className="sort-icon active">↑</span> : <span className="sort-icon active">↓</span>;
+  };
 
   return (
     <div 
@@ -60,9 +93,15 @@ export const UserTable = ({ users, fetchNextPage, hasMore, isLoading }: UserTabl
     >
       <div className="user-table">
         <div className="table-header">
-          <div className="th col-name">Name</div>
-          <div className="th col-email">Email</div>
-          <div className="th col-company">Company</div>
+          <div className="th col-name sortable" onClick={() => handleSort('name')}>
+            <span>Name</span> {renderSortIndicator('name')}
+          </div>
+          <div className="th col-email sortable" onClick={() => handleSort('email')}>
+            <span>Email</span> {renderSortIndicator('email')}
+          </div>
+          <div className="th col-company sortable" onClick={() => handleSort('company')}>
+            <span>Company</span> {renderSortIndicator('company')}
+          </div>
         </div>
         
         <div 
@@ -73,8 +112,8 @@ export const UserTable = ({ users, fetchNextPage, hasMore, isLoading }: UserTabl
           }}
         >
           {virtualItems.map((virtualRow) => {
-            const isLoaderRow = virtualRow.index > users.length - 1;
-            const user = users[virtualRow.index];
+            const isLoaderRow = virtualRow.index > sortedUsers.length - 1;
+            const user = sortedUsers[virtualRow.index];
 
             return (
               <div
