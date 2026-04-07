@@ -89,7 +89,7 @@ export const UserTable = memo(({ users, fetchNextPage, hasMore, isLoading }: Use
     <div 
       className="table-wrapper animate-fade-in" 
       ref={parentRef} 
-      style={{ height: '80vh', overflow: 'auto' }}
+      style={{ height: '75vh', overflow: 'auto' }}
     >
       <div className="user-table">
         <div className="table-header">
