@@ -2,6 +2,7 @@ import { useFetchUsers } from "../hooks/useFetchUsers";
 import { Loader } from "./loaderState/Loader";
 import { ErrorState } from "./errorState/ErrorState";
 import { UserTable } from "./userTable/UserTable";
+import { ThemeToggle } from "./themeToggle/ThemeToggle";
 
 export const Dashboard = () => {
   const { users, loading, error } = useFetchUsers();
@@ -16,7 +17,10 @@ export const Dashboard = () => {
 
   return (
     <div>
-      <h1>Users List</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', marginTop: '24px' }}>
+        <h1 style={{ margin: 0 }}>Users List</h1>
+        <ThemeToggle />
+      </div>
 
       <UserTable users={users} />
     </div>

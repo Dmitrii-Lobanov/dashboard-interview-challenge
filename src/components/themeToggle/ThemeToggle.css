@@ -1,0 +1,69 @@
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  outline: none;
+}
+
+.theme-toggle:focus-visible .theme-toggle-track {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.theme-toggle-track {
+  width: 52px;
+  height: 28px;
+  background-color: var(--border);
+  border-radius: 999px;
+  position: relative;
+  transition: background-color 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+.theme-toggle.dark .theme-toggle-track {
+  background-color: var(--accent);
+}
+
+.theme-toggle-thumb {
+  width: 24px;
+  height: 24px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(0);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease;
+  box-sizing: border-box;
+  color: #ffb703; /* Sun color */
+}
+
+.theme-toggle.dark .theme-toggle-thumb {
+  transform: translateX(24px);
+  background-color: var(--bg);
+  border-color: var(--accent);
+  color: var(--accent); /* Moon color matches accent in dark mode */
+}
+
+.theme-toggle:hover .theme-toggle-thumb {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.theme-toggle:active .theme-toggle-thumb {
+  width: 28px;
+}
+
+.theme-toggle.dark:active .theme-toggle-thumb {
+  transform: translateX(20px);
+}
