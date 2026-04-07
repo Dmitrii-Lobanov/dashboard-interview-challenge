@@ -1,6 +1,7 @@
 export const getUsers = async (
   page: number = 1,
   limit: number = 10,
+  search: string = ""
 ) => {
   // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 300));
@@ -19,9 +20,16 @@ export const getUsers = async (
     };
   });
 
+  const filteredUsers = search.trim()
+    ? allUsers.filter(u => 
+        u.name.toLowerCase().includes(search.toLowerCase()) ||
+        u.email.toLowerCase().includes(search.toLowerCase())
+      )
+    : allUsers;
+
   const startIndex = (page - 1) * limit;
   return {
-    data: allUsers.slice(startIndex, startIndex + limit),
-    totalCount: allUsers.length
+    data: filteredUsers.slice(startIndex, startIndex + limit),
+    totalCount: filteredUsers.length
   };
 };

@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useMemo } from 'react';
+import { useRef, useEffect, useState, useMemo, useCallback, memo } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import './UserTable.css';
 
@@ -18,20 +18,20 @@ interface UserTableProps {
   isLoading?: boolean;
 }
 
-export const UserTable = ({ users, fetchNextPage, hasMore, isLoading }: UserTableProps) => {
+export const UserTable = memo(({ users, fetchNextPage, hasMore, isLoading }: UserTableProps) => {
   const parentRef = useRef<HTMLDivElement>(null);
 
   const [sortKey, setSortKey] = useState<keyof User | 'company' | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
-  const handleSort = (key: keyof User | 'company') => {
+  const handleSort = useCallback((key: keyof User | 'company') => {
     if (sortKey === key) {
       setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
     } else {
       setSortKey(key);
       setSortDirection('asc');
     }
-  };
+  }, [sortKey]);
 
   const sortedUsers = useMemo(() => {
     if (!users) return [];
@@ -75,15 +75,15 @@ export const UserTable = ({ users, fetchNextPage, hasMore, isLoading }: UserTabl
     }
   }, [hasMore, fetchNextPage, sortedUsers.length, isLoading, virtualItems]);
 
+  const renderSortIndicator = useCallback((key: string) => {
+    if (sortKey !== key) return <span className="sort-icon inactive">↕</span>;
+    return sortDirection === 'asc' ? <span className="sort-icon active">↑</span> : <span className="sort-icon active">↓</span>;
+  }, [sortKey, sortDirection]);
+
   if (!users || users.length === 0) {
     if (isLoading) return null; // Let dashboard loader handle full-page empty state
     return <div className="no-users">No users found</div>;
   }
-
-  const renderSortIndicator = (key: string) => {
-    if (sortKey !== key) return <span className="sort-icon inactive">↕</span>;
-    return sortDirection === 'asc' ? <span className="sort-icon active">↑</span> : <span className="sort-icon active">↓</span>;
-  };
 
   return (
     <div 
@@ -160,4 +160,4 @@ export const UserTable = ({ users, fetchNextPage, hasMore, isLoading }: UserTabl
       </div>
     </div>
   );
-};
+});
