@@ -5,9 +5,11 @@ import { UserTable } from "./userTable/UserTable";
 import { ThemeToggle } from "./themeToggle/ThemeToggle";
 
 export const Dashboard = () => {
-  const { users, loading, error } = useFetchUsers();
+  const { users, loading, error, hasMore, fetchNextPage } = useFetchUsers();
 
-  if (loading) {
+  // If we are currently loading and there are no users yet, show the full-page Loader.
+  // Otherwise, the virtual list itself will handle the bottom loading row.
+  if (loading && users.length === 0) {
     return <Loader />;
   }
 
@@ -22,7 +24,12 @@ export const Dashboard = () => {
         <ThemeToggle />
       </div>
 
-      <UserTable users={users} />
+      <UserTable 
+        users={users} 
+        fetchNextPage={fetchNextPage} 
+        hasMore={hasMore} 
+        isLoading={loading} 
+      />
     </div>
   );
 };

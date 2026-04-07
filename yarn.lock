@@ -389,6 +389,18 @@
   resolved "https://registry.yarnpkg.com/@rolldown/pluginutils/-/pluginutils-1.0.0-rc.7.tgz#0414869467f0e471a6515d4f506c85fde867e022"
   integrity sha512-qujRfC8sFVInYSPPMLQByRh7zhwkGFS4+tyMQ83srV1qrxL4g8E2tyxVVyxd0+8QeBM1mIk9KbWxkegRr76XzA==
 
+"@tanstack/react-virtual@^3.13.23":
+  version "3.13.23"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-virtual/-/react-virtual-3.13.23.tgz#27e969396c39ee919dead847b2f513e2f3b707bf"
+  integrity sha512-XnMRnHQ23piOVj2bzJqHrRrLg4r+F86fuBcwteKfbIjJrtGxb4z7tIvPVAe4B+4UVwo9G4Giuz5fmapcrnZ0OQ==
+  dependencies:
+    "@tanstack/virtual-core" "3.13.23"
+
+"@tanstack/virtual-core@3.13.23":
+  version "3.13.23"
+  resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.13.23.tgz#72bcaad8bbf6bd86e0d02776dc7dc968d0aba07b"
+  integrity sha512-zSz2Z2HNyLjCplANTDyl3BcdQJc2k1+yyFoKhNRmCr7V7dY8o8q5m8uFTI1/Pg1kL+Hgrz6u3Xo6eFUB7l66cg==
+
 "@tybys/wasm-util@^0.10.1":
   version "0.10.1"
   resolved "https://registry.yarnpkg.com/@tybys/wasm-util/-/wasm-util-0.10.1.tgz#ecddd3205cf1e2d5274649ff0eedd2991ed7f414"
