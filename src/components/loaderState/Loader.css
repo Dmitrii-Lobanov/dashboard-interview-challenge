@@ -1,0 +1,71 @@
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  gap: 20px;
+  min-height: 200px;
+  flex-grow: 1;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  position: relative;
+  background: conic-gradient(from 0deg, transparent 20%, var(--accent) 100%);
+  animation: spin 1s linear infinite;
+  /* Glow effect */
+  box-shadow: 0 0 15px var(--accent-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  background: var(--bg);
+  border-radius: 50%;
+}
+
+/* Optional glowing dot effect for the head of the spinner */
+.spinner::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px 2px var(--accent);
+}
+
+.loader-text {
+  font-family: var(--heading);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--accent);
+  margin: 0;
+  letter-spacing: 0.5px;
+  animation: pulse-text 1.5s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-text {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
